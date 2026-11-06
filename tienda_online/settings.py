@@ -88,7 +88,7 @@ AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'users.authentication.JWTAuthentication',
     ),
 }
 
@@ -104,7 +104,7 @@ SWAGGER_SETTINGS = {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header',
-            'description': 'Pega el token así: Bearer <access_token>',
+            'description': 'Pega solo el access token, sin la palabra Bearer y sin comillas.',
         }
     },
     'DEFAULT_AUTO_SCHEMA_CLASS': 'tienda_online.swagger.JWTAutoSchema',
