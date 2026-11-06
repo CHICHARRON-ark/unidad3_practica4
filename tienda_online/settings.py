@@ -1,6 +1,6 @@
+from datetime import timedelta
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-ak*hzx1zt(9m$)y*&!ff)=x^d1ziy3%=&ll01*%89%gsl!qt&u'
@@ -9,7 +9,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application definition
 BASE_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,10 +21,13 @@ BASE_APPS = [
 THIRD_APPS = [
     'rest_framework',
     'django_filters',
+    'drf_yasg',
+    'rest_framework_simplejwt',
 ]
 
 OWN_APPS = [
     'products',
+    'users',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_APPS + OWN_APPS
@@ -80,15 +82,30 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-THIRD_APPS = [
-    'rest_framework',
-    'django_filters',
-    'rest_framework_simplejwt',  # <-- Modificación 1
-]
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Modificación 2: Configuración global para JWT
+AUTH_USER_MODEL = 'users.User'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Pega el token así: Bearer <access_token>',
+        }
+    },
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'tienda_online.swagger.JWTAutoSchema',
 }
